@@ -18,9 +18,9 @@ styx is all valid TOML made up a header and 3 sections. Each file is called a De
 | Sections | Required |
 | -------- | -------- |
 | header | :heavy_check_mark: |
-| preprocessing |   |
+| preprocess |   |
 | fields | :heavy_check_mark: |
-| postprocessing |  |
+| postprocess |  |
 
 
 ### Header
@@ -34,19 +34,21 @@ Example:
 type = "MythicalCreature"
 ```
 
-### Preprocessing
+### Preprocess
 
-Begins with the section header: `preprocessing`
+Preprocess is for prepping data before processing the fields to map.
+
+Begins with the section header: `preprocess`
 
 ```toml
-[preprocess]  # Order matters for preprocessing
+[preprocess]  # Order matters for preprocess
 ```
 
-Preprocessing is then made up of subsections that will be sorted alphanumerically, and invoked in that order. So
+Preprocess is then made up of subsections that will be sorted alphanumerically, and invoked in that order. So
 we recommend prepending a numeral to the front of the section header to ensure proper processing (espcially
 for dependent operations):
 
-#### Preprocessing Subsection Fields
+#### Preprocess Subsection Fields
 | Field | Required | Description |
 | -------- | -------- | -------- |
 | input_path | :heavy_check_mark: | `Path` to *get* data from the *From Structure* |
@@ -64,6 +66,40 @@ for dependent operations):
     function = "parse_json"  # See Functions below
     or_else = {}
     on_throw = "throw"
+```
+
+
+### Postprocess
+Postprocessing structure is the same as preprocessing, but it is to be performed after the `fields` section has been processed.
+
+Begins with the section header: `ppostprocessing`
+
+```toml
+[postprocess]  # Order matters here as well
+```
+
+Postprocess is then made up of subsections that will be sorted alphanumerically, and invoked in that order. So
+we recommend prepending a numeral to the front of the section header to ensure proper processing (espcially
+for dependent operations):
+
+#### Postprocess Subsection Fields
+| Field | Required | Description |
+| -------- | -------- | -------- |
+| input_path | :heavy_check_mark: | `Path` to *get* data from the *From Structure* |
+| output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure* |
+| function | :heavy_check_mark: | `Function` to invoke on `input_path` before setting in `output_path`
+| or_else |  | Optional value to *set* in `output_path` if value not found in `input_path`  |
+| on_throw |  | Action to perform if exception is thrown during `transform`. Valid values are: `or_else`, `throw`, `skip` |
+
+#### Example
+```toml
+[postprocess]  
+
+    [preprocess.01-action]
+    path = "fields.olympians"
+    function = "parse_json"  # See Functions below
+    or_else = {}
+    on_throw = "skip"
 ```
 
 ## Functions
