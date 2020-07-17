@@ -1,6 +1,8 @@
 # styx
 ETL/ELT declarative mapping syntax using TOML
 
+Version 0.1.0
+
 ## Introduction
 
 styx is aiming towards becoming a language agnostic ETL/ELT syntax to map from one structure to another structure.
