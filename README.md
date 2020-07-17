@@ -11,7 +11,7 @@ styx is aiming towards becoming a language agnostic ETL/ELT syntax to map from o
 
 ## Definition
 
-styx is all valid TOML made up a header and 3 sections.
+styx is all valid TOML made up a header and 3 sections. Each file is called a Definition. It defines how a mapping should occur unidirectionally.
 
 ### Sections
 
@@ -23,6 +23,16 @@ styx is all valid TOML made up a header and 3 sections.
 | postprocessing |  |
 
 
+### Header
+
+For now, the header only consists of a key `type` to declare the `type` of the definition
+
+Example:
+```toml
+# mythical_creature.styx
+
+type = "MythicalCreature"
+```
 
 ### Preprocessing
 
@@ -50,8 +60,8 @@ for dependent operations):
 [preprocess]  
 
     [preprocess.01-action]
-    path = "fields.custentity_lead_geocodes"
-    transform = "parseJson"
+    path = "fields.olympians"
+    function = "parse_json"  # See Functions below
     or_else = {}
     on_throw = "throw"
 ```
