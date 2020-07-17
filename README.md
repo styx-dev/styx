@@ -1,7 +1,7 @@
-# styx
+# styx :ocean:
 ETL/ELT declarative mapping syntax using TOML
 
-Version 0.1.0
+Version 0.1.0 - *This is a schema in active development*
 
 ## Introduction
 
@@ -25,7 +25,7 @@ styx is all valid TOML made up a header and 3 sections. Each file is called a De
 | postprocess |  |
 
 
-### Header
+## Header
 
 For now, the header only consists of a top-level key `type` to declare the `type` of the definition
 
@@ -36,7 +36,7 @@ Example:
 type = "MythicalCreature"
 ```
 
-### Preprocess
+## Preprocess
 
 Preprocess is for prepping data before processing the fields to map.
 
@@ -55,9 +55,9 @@ for dependent operations):
 | -------- | -------- | -------- |
 | input_paths | :heavy_check_mark: | List of `Path`s to *get* data from the *From Structure*. Note: these will be passed to the function as arguments in the order that they are listed. |
 | output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure* |
-| function | :heavy_check_mark: | `Function` to invoke on `input_path` before setting in `output_path`
+| function | :heavy_check_mark: | `Function` to invoke on `input_paths` before setting in `output_path`
 | or_else |  | Optional value to *set* in `output_path` if value not found in `input_path`  |
-| on_throw |  | Action to perform if exception is thrown during `transform`. Valid values are: `or_else`, `throw`, `skip` |
+| on_throw |  | Action to perform if exception is thrown during `function`. Valid values are: `or_else`, `throw`, `skip` |
 
 #### Example
 ```toml
@@ -70,8 +70,72 @@ for dependent operations):
     on_throw = "throw"
 ```
 
+## Fields
 
-### Postprocess
+Fields is where the bulk of the action takes place. It is a declaration of how to unidirectionally map from one structure to another.
+
+Begins with the section header: `fields`
+
+```toml
+[fields]
+```
+
+Fields is then made up of subsections that correspond to the names of the fields in the `To Structure`.
+
+#### A Simple Example
+```toml
+[fields]  
+
+    [fields.title]
+    input_paths = ["fields.olympian.title"] 
+
+```
+
+#### Fields Subsection Fields
+
+The table header will corrrespond to the output path in the `To Structure`
+
+```toml
+    [fields.title]  # 'title' will be the name of the field in the `To Structure`
+```
+
+**Available Fields**
+
+| Field | Required | Conditionally Required | Description |
+| -------- | -------- | -------- | ---------- |
+| input_paths | | :heavy_check_mark:  | List of `Path`s to *get* data from the *From Structure*. Note: these will be passed to the function as arguments in the order that they are listed, if a function is provided |
+| possible_paths | | :heavy_check_mark:  | List of potential `Path`s to *get* data from the *From Structure*. *path_condition* will be used to determine which *input_path* to use. Currently does not support multi-argument functions, so please preprocess to prepare data instead.
+| path_condition | | :heavy_check_mark:  | Object used to determine the correct input path in *possible_paths*. Must be defined if *possible_paths" is defined. |
+| type | | | Styx Definition to use to map this value |
+| function | | | `Function` to invoke on `input_paths` before setting in `output_path` |
+| or_else |  | :heavy_check_mark: | Optional value to *set* in `output_path` if value not found in `input_path`  |
+| on_throw |  | | Action to perform if exception is thrown during `function`. Valid values are: `or_else`, `throw`, `skip` |
+
+**Notes**
+
+Either `input_paths` or `possible_paths` must be defined, but not both.
+
+**Other actions**
+Data can be copied to nested objects:
+
+Syntax:
+
+| FIELD_NAME | NESTED_FIELD_NAME | PATH | 
+| ---------- | ----------------- | ---- |
+| "olympian"   | "title"             |  "fields.olympian_title" |
+
+#### Example
+
+```toml
+[fields]
+    [fields.olympian]
+        type = "Olympian"
+        # To Structure = From Structure Path
+        olympian.title = "fields.olympian_title"  
+        # The data in "fields.olympian_title" will be copied to the nested object "olympian" in the field "title" 
+        # before processing with the Olympian Styx definition
+```
+## Postprocess
 Postprocessing structure is the same as preprocessing, but it is to be performed after the `fields` section has been processed.
 
 Begins with the section header: `ppostprocessing`
@@ -91,7 +155,7 @@ for dependent operations):
 | output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure* |
 | function | :heavy_check_mark: | `Function` to invoke on `input_path` before setting in `output_path`
 | or_else |  | Optional value to *set* in `output_path` if value not found in `input_path`  |
-| on_throw |  | Action to perform if exception is thrown during `transform`. Valid values are: `or_else`, `throw`, `skip` |
+| on_throw |  | Action to perform if exception is thrown during `function`. Valid values are: `or_else`, `throw`, `skip` |
 
 #### Example
 ```toml
