@@ -25,7 +25,7 @@ styx is all valid TOML made up a header and 3 sections. Each file is called a De
 
 ### Header
 
-For now, the header only consists of a key `type` to declare the `type` of the definition
+For now, the header only consists of a top-level key `type` to declare the `type` of the definition
 
 Example:
 ```toml
