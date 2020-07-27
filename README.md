@@ -189,7 +189,7 @@ TODO: Expand and add more type definitions to `functions.styx`.
 
 ## Other
 
-# `const` in input_paths
+### `const` in input_paths
 
 The special keyword `const` can be used in any `input_paths` to provide a constant value. This value could then be passed to any functions. For example, if you wanted to concatenate two fields with a comma:
 
