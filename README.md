@@ -1,7 +1,7 @@
 # styx :ocean:
 ETL/ELT declarative mapping syntax using TOML
 
-Version 0.1.0 - *This is a schema in active development*
+Version 0.2.0 - *This is a schema in active development*
 
 ## Introduction
 
@@ -27,13 +27,14 @@ styx is all valid TOML made up a header and 3 sections. Each file is called a De
 
 ## Header
 
-For now, the header only consists of a top-level key `type` to declare the `type` of the definition
+The header  consists of two top-level required keys: `from_type` and `to_type`. 
 
 Example:
 ```toml
 # mythical_creature.styx
 
-type = "MythicalCreature"
+from_type = "mythical_creature"
+to_type = "DivineCreature
 ```
 
 ## Preprocess
@@ -185,3 +186,14 @@ functions = [
 When the Definition is parsed, it will check your `functions.styx` file to ensure that these functions exist.
 
 TODO: Expand and add more type definitions to `functions.styx`.
+
+## Other
+
+# `const` in input_paths
+
+The special keyword `const` can be used in any `input_paths` to provide a constant value. This value could then be passed to any functions. For example, if you wanted to concatenate two fields with a comma:
+
+```toml
+input_paths = ["fields.first_name", "const(',')", "fields.last_name"]
+function = "concat"
+```
