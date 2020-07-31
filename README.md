@@ -185,6 +185,8 @@ functions = [
 
 When the Definition is parsed, it will check your `functions.styx` file to ensure that these functions exist.
 
+**Currently, a function may take multiple `input_paths`, but it must return a single string.**
+
 TODO: Expand and add more type definitions to `functions.styx`.
 
 ## Other
