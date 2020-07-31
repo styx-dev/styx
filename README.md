@@ -107,14 +107,14 @@ The table header will corrrespond to the output path in the `To Structure`
 | input_paths | | :heavy_check_mark:  | List of `Path`s to *get* data from the *From Structure*. Note: these will be passed to the function as arguments in the order that they are listed, if a function is provided |
 | possible_paths | | :heavy_check_mark:  | List of potential `Path`s to *get* data from the *From Structure*. *path_condition* will be used to determine which *input_path* to use. Currently does not support multi-argument functions, so please preprocess to prepare data instead.
 | path_condition | | :heavy_check_mark:  | Object used to determine the correct input path in *possible_paths*. Must be defined if *possible_paths" is defined. |
-| type | | | Styx Definition to use to map this value |
+| from_type | | | Styx Definition to use to map this value |
 | function | | | `Function` to invoke on `input_paths` before setting in `output_path` |
 | or_else |  | :heavy_check_mark: | Optional value to *set* in `output_path` if value not found in `input_path`  |
 | on_throw |  | | Action to perform if exception is thrown during `function`. Valid values are: `or_else`, `throw`, `skip` |
 
 **Notes**
 
-Either `input_paths` or `possible_paths` must be defined, but not both.
+Either `input_paths` or `possible_paths` must be defined, but not both. A `const` value can also be used alternatively (see below).
 
 **Other actions**
 Data can be copied to nested objects:
