@@ -1,7 +1,7 @@
 # styx :ocean:
 ETL/ELT declarative mapping syntax using TOML
 
-Version 0.2.0 - *This is a schema in active development*
+Version 0.3.0 - *This is a schema in active development*
 
 ## Introduction
 
@@ -28,6 +28,7 @@ styx is all valid TOML made up a header and 3 sections. Each file is called a De
 ## Header
 
 The header  consists of two top-level required keys: `from_type` and `to_type`. 
+And one optional key: `many`.
 
 Example:
 ```toml
@@ -35,7 +36,10 @@ Example:
 
 from_type = "mythical_creature"
 to_type = "DivineCreature
+many = true
 ```
+
+If `many` is specified for the Mapper, then the preprocessor, fields, and processors will be invoked over an assumed iterable of values.
 
 ## Preprocess
 
