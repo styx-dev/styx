@@ -59,7 +59,7 @@ for dependent operations):
 | Field | Required | Description |
 | -------- | -------- | -------- |
 | input_paths | :heavy_check_mark: | List of `Path`s to *get* data from the *From Structure*. Note: these will be passed to the function as arguments in the order that they are listed. |
-| output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure* |
+| output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure*. Allows custom alias `.` (like "cwd") to overwrite entire structure. |
 | function | :heavy_check_mark: | `Function` to invoke on `input_paths` before setting in `output_path`
 | or_else |  | Optional value to *set* in `output_path` if value not found in `input_path`  |
 | on_throw |  | Action to perform if exception is thrown during `function`. Valid values are: `or_else`, `throw`, `skip` |
@@ -157,7 +157,7 @@ for dependent operations):
 | Field | Required | Description |
 | -------- | -------- | -------- |
 | input_paths | :heavy_check_mark: | List of `Path`s to *get* data from the *From Structure*. Note: these will be passed to the function as arguments in the order that they are listed. |
-| output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure* |
+| output_path | :heavy_check_mark: | `Path` to *set* data from the *To Structure*. Allows custom alias `.` (like "cwd") to overwrite entire structure. |
 | function | :heavy_check_mark: | `Function` to invoke on `input_path` before setting in `output_path`
 | or_else |  | Optional value to *set* in `output_path` if value not found in `input_path`  |
 | on_throw |  | Action to perform if exception is thrown during `function`. Valid values are: `or_else`, `throw`, `skip` |
